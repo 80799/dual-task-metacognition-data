@@ -1,0 +1,155 @@
+DATA DICTIONARY
+
+Manuscript: When Dual-Task Costs Extend to Metacognition: Evidence From Modality Overlap
+
+1. Common Variables and Coding
+
+sub: Participant ID extracted from the raw filename. IDs are specific to each experiment.
+age: Age in years, taken from the baseline file.
+gender: Gender (Exp2–4), coded as 0 = female and 1 = male. Nonmissing records from baseline take priority, followed by visual and then audio. Values are left blank if missing or unrecognized.
+
+Condition suffixes in the analysis variables:
+0 = baseline (single-task condition)
+1 = visual (V–V, within-modality dual-task condition)
+2 = audio (V–A, cross-modality dual-task condition)
+
+Uncorrected accuracy and mean judgments of learning (JOLs) are expressed on a 0–100 scale. Calibration and accuracy differences are expressed in percentage points. Gamma is unitless and ranges from −1 to 1 when defined. Selection counts are expressed as numbers of picture pairs.
+Derived measures are rounded to two decimal places after calculation; counts are integers. Chance-corrected accuracy and calibration may be negative and are not truncated at zero.
+Blank cells in the analysis CSV files indicate missing or undefined values, not zero.
+
+
+2. Raw Files and Main Fields
+
+Main-task event records:
+<ID>_baseline_data.csv: baseline condition.
+<ID>_visual_data.csv: visual condition.
+<ID>_audio_data.csv: audio condition.
+
+Trial-level secondary-task records:
+<ID>_visualCRT.csv: Visual choice reaction task (CRT).
+<ID>_audioCRT.csv: Auditory choice reaction task (CRT).
+
+Not every row in a main-task file represents a recognition trial. The type field identifies the event:
+recognition: Recognition response.
+JOL: Judgment of learning event (Exp2).
+restudyChoice: Judgment of learning and restudy choice event (Exp3–4).
+restudyDisplay: Actual re-presentation of a picture pair (Exp3–4).
+interference: Distractor-task event, not used to calculate the recognition, JOL, or restudy choice measures reported in the manuscript.
+
+Main fields in the main-task files:
+cue, target: Paths or filenames of the cue picture and its paired target picture.
+JOL_score: Judgment of learning rating (0–100).
+restudy: 1 = selected for restudy; 0 = not selected for restudy.
+participantResponse: Recorded recognition response.
+isCorrect: Recognition response accuracy; 1/1.0 = correct, 0/0.0 = incorrect.
+age, gender: Demographic information; gender text is converted to the codes specified in Section 1.
+subject: Participant ID recorded by the experimental program. The sub variable in the analysis CSV files uses the ID extracted from the filename.
+
+accuracy, correctCount, and totalCount are event-level summary fields and are not used to calculate the recognition accuracy reported in the manuscript. Other fields recording response times, presented content, event indices, and program information are not used to calculate the analysis measures listed in this dictionary.
+
+Main fields in the CRT files:
+Trial: Trial number.
+number: Presented digit.
+corrANS: Correct response key.
+response: Actual response key; null indicates that no response was recorded.
+iscorrect: 1 = correct, 0 = incorrect; trials without a response are not counted as correct.
+
+Note the difference in capitalization: the main-task files use isCorrect, whereas the CRT files use iscorrect.
+
+
+3. General Accuracy Calculations
+
+Recognition accuracy = number of correct recognition records / total number of recognition records × 100.
+CRT accuracy = number of records with iscorrect = 1 / total number of CRT records × 100.
+
+CRT trials without a response remain in the denominator. No additional response-time filtering is applied.
+When a measure is calculated for a specific subset of picture pairs, both the correct-response count and the total count are restricted to that subset.
+
+
+4. Exp1 Analysis Variables
+
+sub, age: See Section 1.
+acc0, acc1, acc2: Recognition accuracy across all recognition records in each condition.
+CRT1, CRT2: CRT accuracy in the visual and audio conditions, respectively.
+
+
+5. Exp2 Analysis Variables
+
+sub, age, gender: See Section 1.
+
+JOL0, JOL1, JOL2: Mean of the valid JOL_score values in each condition. Blank, None, nan, and null values are excluded from the mean.
+
+acc0, acc1, acc2: Recognition accuracy across all recognition records in each condition.
+
+corr_acc0, corr_acc1, corr_acc2: Chance-corrected recognition accuracy.
+Formula: corrected accuracy = (acc − 25) / 0.75.
+Here, acc is expressed as a percentage, and chance performance is 25%.
+
+JOLCalibration0, JOLCalibration1, JOLCalibration2: JOL calibration in each condition.
+Formula: JOL calibration = mean JOL − corrected accuracy.
+Positive values indicate that mean JOL exceeds chance-corrected recognition accuracy; negative values indicate that mean JOL is lower than chance-corrected recognition accuracy.
+
+gamma0, gamma1, gamma2: Goodman–Kruskal gamma between item-level JOLs and recognition correctness in each condition. See Section 7 for the calculation.
+
+CRTacc1, CRTacc2: CRT accuracy in the visual and audio conditions, respectively.
+
+Within each participant and condition, JOL and recognition records are matched using normalized cue filenames. Chance-corrected accuracy and calibration are calculated from unrounded values and then rounded to two decimal places.
+
+
+6. Exp3 and Exp4 Analysis Variables
+
+In this section, restudy indicates restudy choice, whereas display indicates actual re-presentation:
+restudy = 1: Selected for restudy; restudy = 0: not selected for restudy.
+display1: The picture pair appears in a restudyDisplay event and was therefore re-presented.
+display0: The picture pair does not appear in a restudyDisplay event and was therefore not re-presented.
+Display status is derived from the event records; it is not an existing column in the raw files. Selection for restudy does not necessarily imply actual re-presentation, and unselected picture pairs may also be re-presented.
+Within each participant and condition, picture pairs are identified jointly by their normalized cue and target filenames.
+
+sub, age, gender: See Section 1.
+
+CRTacc1, CRTacc2 in Exp3; CRT1, CRT2 in Exp4: CRT accuracy in the visual and audio conditions, respectively.
+
+JOLCalibration0, JOLCalibration1, JOLCalibration2: JOL calibration in each condition, calculated using only display0 picture pairs.
+Formula: JOL calibration = mean JOL − (A − 20) / 0.80.
+Here, mean JOL and A are the mean JOL and recognition accuracy (percentage), respectively, for these display0 picture pairs. Chance performance is 20%.
+Positive values indicate that mean JOL exceeds chance-corrected recognition accuracy; negative values indicate that mean JOL is lower than chance-corrected recognition accuracy. Calculations use unrounded values, with the final result rounded to two decimal places.
+
+JOLResolution0, JOLResolution1, JOLResolution2: Goodman–Kruskal gamma between JOLs and recognition correctness among display0 picture pairs in each condition.
+
+JolChoiceGamma0, JolChoiceGamma1, JolChoiceGamma2 in Exp3;
+JolChoicegamma0, JolChoicegamma1, JolChoicegamma2 in Exp4:
+Goodman–Kruskal gamma between JOLs and restudy choices (restudy), calculated across all picture pairs with restudyChoice records in each condition. Negative values indicate that lower JOLs are associated with selection for restudy. Capitalization follows the variable names in the respective analysis files.
+
+R1diffD0, R1diffD1, R1diffD2: Within each condition, the difference in recognition accuracy between re-presented and non-re-presented picture pairs among those selected for restudy (restudy = 1).
+Formula: R1diffD = accuracy(display1 | restudy = 1) − accuracy(display0 | restudy = 1).
+
+R0diffD0, R0diffD1, R0diffD2: The corresponding difference in recognition accuracy among picture pairs not selected for restudy (restudy = 0) in each condition.
+Formula: R0diffD = accuracy(display1 | restudy = 0) − accuracy(display0 | restudy = 0).
+
+In these formulas, accuracy denotes recognition accuracy for the specified subset of picture pairs, using that subset's own number of picture pairs as the denominator. Differences are expressed in percentage points and are not corrected for chance. Positive values indicate higher subsequent recognition accuracy for re-presented picture pairs. These are differences between two groups of picture pairs, not pre-to-post changes for the same picture pairs. If either display group is empty, the corresponding difference is left blank.
+
+R1count0, R1count1, R1count2 (Exp4 only): Number of picture pairs selected for restudy (restudy = 1) in each condition.
+R0count0, R0count1, R0count2 (Exp4 only): Number of picture pairs not selected for restudy (restudy = 0) in each condition.
+Counts are based on restudyChoice records and reflect restudy selections, not actual re-presentations.
+
+
+7. Goodman–Kruskal Gamma
+
+For each pair of valid observations from two distinct items, (x_i, y_i) and (x_j, y_j), calculate:
+(x_i − x_j) × (y_i − y_j).
+
+A positive product indicates a concordant pair.
+A negative product indicates a discordant pair.
+A zero product indicates a tie on at least one variable; that pair is excluded from the calculation.
+
+gamma = (C − D) / (C + D).
+Here, C is the number of concordant pairs and D is the number of discordant pairs. Each pair of items is counted once.
+When C + D = 0, gamma is undefined and is left blank in the analysis CSV file.
+Gamma is calculated directly by the Python data extraction scripts.
+
+
+8. Analysis Sample Selection
+
+filter: SPSS variable used to select the analysis sample. The SPSS syntax for Exp2–4 references this variable; it is not included in the analysis CSV files generated by Python.
+
+The exclusion criteria and final sample size for each experiment are reported in the manuscript. When reproducing analyses from the SPSS data files, activate the filter as specified in the corresponding syntax. When importing data from the CSV files, recreate the sample selection according to the exclusion criteria described in the manuscript.
