@@ -2,12 +2,13 @@
 
 Manuscript: When Dual-Task Costs Extend to Metacognition: Evidence From Modality Overlap
 
+
 1. Archive Contents
 
-The archive is organized into four experiment folders: Exp1, Exp2, Exp3, and Exp4. Each folder contains raw data, participant-level analysis data, a Python data extraction script, an SPSS data file, SPSS analysis syntax, and statistical output.
+The archive is organized into four experiment folders: Exp1, Exp2, Exp3, and Exp4. Each folder contains raw data, experimental task files, participant-level analysis data, a Python data-processing script, an SPSS data file, SPSS analysis syntax, and statistical output.
 
-Additional files:
-DATA_DICTIONARY.txt: Variable definitions, condition codes, and calculation methods for the main measures.
+Additional file:
+DATA_DICTIONARY.txt: Variable definitions, condition codes, units, and calculation methods for the main measures.
 
 Participant IDs are specific to each experiment. Identical IDs across experiments do not indicate the same participant.
 
@@ -16,36 +17,56 @@ Participant IDs are specific to each experiment. Identical IDs across experiment
 
 Exp1 is shown below as an example; the other experiment folders follow the same structure.
 
-Exp1/Exp1data/: Raw event records and trial-level CRT data in CSV format.
-Exp1/Exp1_extract.py: Python script for extracting analysis variables from the raw CSV files.
-Exp1/Exp1_analysis.csv: Participant-level analysis data.
-Exp1/Exp1_analysis.sav: Corresponding SPSS data file.
-Exp1/Exp1_syntax.sps: SPSS analysis syntax.
-Exp1/Exp1_Results.pdf: SPSS statistical output.
+Exp1/
+    Exp1_raw_data/
+        Raw experimental data files.
+
+    Exp1_task_program/
+        Experimental task files used to run the study.
+
+    Exp1_analysis.csv
+        Participant-level analysis dataset in CSV format.
+
+    Exp1_analysis.sav
+        Corresponding participant-level analysis dataset in SPSS format.
+
+    Exp1_data_processing.py
+        Python script used to process the raw data and generate Exp1_analysis.csv.
+
+    Exp1_syntax.sps
+        SPSS syntax used for the statistical analyses reported in the manuscript.
+
+    Exp1_results.pdf
+        SPSS statistical output corresponding to the reported analyses.
 
 
-3. Data Extraction
+3. Data Processing
 
-The extraction scripts use Python 3 and require only the standard library; no third-party packages are needed. The scripts were previously run using Python 3.6.6.
+The data-processing scripts use Python 3 and require only the Python standard library; no third-party packages are needed. The scripts were previously run using Python 3.6.6.
 
 Run the following commands from the project root directory:
 
-python Exp1/Exp1_extract.py
-python Exp2/Exp2_extract.py
-python Exp3/Exp3_extract.py
-python Exp4/Exp4_extract.py
+python Exp1/Exp1_data_processing.py
+python Exp2/Exp2_data_processing.py
+python Exp3/Exp3_data_processing.py
+python Exp4/Exp4_data_processing.py
 
-Each script reads the raw data for the corresponding experiment and generates ExpN_analysis.csv. Rerunning a script overwrites the existing output file.
+Each script reads the raw data files in the corresponding ExpN_raw_data folder and generates ExpN_analysis.csv. Rerunning a script overwrites the existing CSV output file.
 
-See DATA_DICTIONARY.txt for variable definitions, condition codes, and calculation details.
+The resulting CSV files contain the participant-level variables used in the statistical analyses. See DATA_DICTIONARY.txt for variable definitions, condition codes, units, and calculation details.
 
 
-4. SPSS Analyses
+4. Statistical Analyses
 
-Analysis syntax is provided in the corresponding ExpN_syntax.sps file, and statistical output is provided in ExpN_Results.pdf.
+Statistical analyses were conducted using IBM SPSS Statistics (Version 27).
 
-The SPSS data files include a filter variable for selecting the analysis sample. The exclusion criteria and final sample size for each experiment are reported in the manuscript. Apply the exclusions described in the manuscript when reproducing the statistical analyses.
+For each experiment, the SPSS analysis syntax is provided in ExpN_syntax.sps, and the corresponding statistical output is provided in ExpN_results.pdf.
 
-The .sav files provide the analysis data in SPSS format and are not automatically updated by the Python extraction scripts.
+The ExpN_analysis.sav files contain the participant-level analysis data in SPSS format. These files correspond to the analysis datasets but are not automatically regenerated when the Python data-processing scripts are run.
 
-SPSS version used: IBM SPSS Statistics (Version 27).
+The SPSS data files include a filter variable for identifying the analysis sample. Participant exclusion criteria and final sample sizes are reported in the manuscript. The same exclusions should be applied when reproducing the reported statistical analyses.
+
+
+5. Experimental Materials
+
+The ExpN_task_program folders contain the experimental task files and associated materials used for each experiment. These files document the task structure, stimulus presentation, trial sequence, response collection, and other procedural details required to reproduce the experimental procedure.
